@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import {execute} from './cmd.js'
+// import {execute} from './cmd.js'
 export default {
   name: 'app',
   data () {
@@ -43,8 +43,8 @@ export default {
       }
     },
     checkoutUser() {
-      let result = execute('echo');
-      // let result = this.user.indexOf(this.username)
+      // let result = execute('python .\\user-messages.py "read"');
+      let result = this.user.indexOf(this.username)
       return result
     },
   }
