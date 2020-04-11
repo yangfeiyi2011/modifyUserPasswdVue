@@ -14,7 +14,7 @@
 </template>
 
 <script>
-// import {execute} from './cmd.js'
+import {request} from './axios'
 export default {
   name: 'app',
   data () {
@@ -28,24 +28,60 @@ export default {
   },
   methods: {
     changePasswd: function(){
-      let checkoutResult = this.checkoutUser()
-      console.log(checkoutResult)
-      if (checkoutResult == -1) {
-        alert("用户名或密码错误，请重新输入！")
-      } else {
-        const usermessge = {
-          username: this.username,
-          oldpasswd: this.oldpasswd,
-          newpasswd: this.newpasswd
-        }
-        // console.log(this.usermessage)
-        alert(usermessge.username+':密码修改成功')
-      }
+      this.checkoutUser()
+      // let checkoutResult = this.checkoutUser()
+      // if (checkoutResult == 0) {
+      //   alert("用户名或密码错误，请重新输入！")
+      // } else if(checkoutResult == 1) {
+      //   const usermessge = {
+      //     username: this.username,
+      //     oldpasswd: this.oldpasswd,
+      //     newpasswd: this.newpasswd
+      //   }
+      //   // console.log(this.usermessage)
+      //   alert(usermessge.username+':密码修改成功')
+      // } else {
+      //   alert('服务器请求失败，请重试！')
+      // }
     },
     checkoutUser() {
-      // let result = execute('python .\\user-messages.py "read"');
-      let result = this.user.indexOf(this.username)
-      return result
+      request({
+        url:'/url',
+        method: 'GET',
+      }).then(res => {
+        console.log(res)
+        const userMessage = res.data
+        if (userMessage[this.username] == this.oldpasswd){
+          if (this.oldpasswd == this.newpasswd){
+            alert("新旧密码不能相同或不能为空！")
+          } else {
+            request({
+              url:'/url',
+              method: 'POST',
+              data: {
+                name: this.username,
+                passwd: this.newpasswd
+              }
+              }).then(res =>{
+                console.log(res)
+                alert(this.username+':密码修改成功')
+              }).catch(err => {
+                console.log(err)
+                alert("修改密码失败！")
+              })
+          }
+        } else {
+          alert("用户名或密码错误，请重新输入！")
+        }
+        // for (key in userMessage){
+        //   console.log(key + '---' + userMessage[key])
+        // }
+      }).catch(err => {
+        console.log(err)
+        alert('服务器请求失败，请重试！')
+      })
+      // let result = this.user.indexOf(this.username)
+      return -1
     },
   }
 }
