@@ -1,4 +1,5 @@
 import os
+import io
 import sys
 from flask import Flask,request
 import json
@@ -24,7 +25,7 @@ def write(file, newuser):
     newuserPasswd = newuser['passwd']
     newline = "  <user username=\"" + newuserName + "\" password=\"" + newuserPasswd + "\" roles=\"admin\"/>" + "\n"
     userMessages = []
-    tomcat = open(file,'r',encoding='utf-8')
+    tomcat = io.open(file,'r',encoding='utf-8')
     # with open(file,"rt",encoding='utf-8') as f:
         # tomcat = str(f.readline())
     for line in tomcat:
@@ -33,7 +34,7 @@ def write(file, newuser):
     userMessages.insert(-4,newline)
     # print(userMessages)
 
-    newtomcat = open(file,'w',encoding='utf-8')
+    newtomcat = io.open(file,'w',encoding='utf-8')
     for line in userMessages:
         newtomcat.writelines(line)
     newtomcat.close()
@@ -43,7 +44,7 @@ def modify(file, newuser):
     newPasswd = newuser['passwd']
     newline = "  <user username=\"" + userName + "\" password=\"" + newPasswd + "\" roles=\"admin\"/>" + "\n"
     userMessages = []
-    tomcat = open(file,'r',encoding='utf-8')
+    tomcat = io.open(file,'r',encoding='utf-8')
     # with open(file,"rt",encoding='utf-8') as f:
         # tomcat = str(f.readline())
     for line in tomcat:
@@ -53,7 +54,7 @@ def modify(file, newuser):
             userMessages.append(line)
     # print(userMessages)
 
-    newtomcat = open(file,'w',encoding='utf-8')
+    newtomcat = io.open(file,'w',encoding='utf-8')
     for line in userMessages:
         newtomcat.writelines(line)
     newtomcat.close()
