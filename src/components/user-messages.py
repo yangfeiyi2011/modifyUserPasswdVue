@@ -1,6 +1,7 @@
 import os
 import sys
 from flask import Flask,request
+import json
 from flask_cors import CORS
 
 def read(file):
@@ -15,7 +16,8 @@ def read(file):
                     username:password
                 }
             )
-    return userMessage
+    return json.dumps(userMessage) #linux服务器必须返回json格式数据
+    # return userMessage
 
 def write(file, newuser):
     newuserName = newuser['name']
